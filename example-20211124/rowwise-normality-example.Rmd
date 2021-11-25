@@ -41,6 +41,32 @@ mpg %>%
 
 `r chunk_reveal("plot-results", break_type = "auto")`
 
+```{r, eval = FALSE, include = FALSE}
+library(tidyverse)
+
+# Alternative approach using purrr::map
+ad_test_p <- function(x){
+  goftest::ad.test(
+        x = x,
+        null = "pnorm",
+        mean = mean(x),
+        sd = sd(x)
+      )$p.value
+}
+
+mpg %>% 
+  group_by(class) %>% 
+  summarise(
+    across(c(displ, cty, hwy), list)
+    ) %>% 
+  mutate(
+    across(
+      where(is.list), 
+      ~map_dbl(.x, ad_test_p))
+  )
+```
+
+
 ```{css, echo = FALSE}
 @media print {
   .has-continuation {
