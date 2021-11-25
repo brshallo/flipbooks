@@ -1,0 +1,1 @@
+xaringanBuilder::build_gif(here::here("example-20211124", "rowwise-normality-example.Rmd"))
